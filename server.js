@@ -1,12 +1,33 @@
-//  OpenShift sample Node application
-var express = require('express'),
-    app     = express(),
-    morgan  = require('morgan');
-    
-Object.assign=require('object-assign')
+var express    = require('express');
+var path       = require('path');
+var bodyParser = require('body-parser');
+var mongoose   = require('mongoose');
+var morgan     = require('morgan');
+var methodOverride = require('method-override');
 
+var api = require('./config/api');  // Api routes
+var web = require('./config/web');  // Web routes
+    
+Object.assign = require('object-assign')
+
+var app     = express();
+
+// Setup EJS view engine
+app.set('views', path.join(__dirname, 'src/views'));
+app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
+
 app.use(morgan('combined'))
+
+// Setup static folder
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/s3', express.static(path.join(__dirname, 's3')));
+
+// Setup body-parser middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(methodOverride('_method'))
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -32,6 +53,11 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
+
+// Database connection
+mongoose.connect(mongoURL);
+
+
 var db = null,
     dbDetails = new Object();
 
@@ -55,6 +81,11 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
   });
 };
+
+// Call application routes
+api(app);
+web(app);
+
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already

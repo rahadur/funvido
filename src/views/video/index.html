@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FunVido - Funny Video and Entertainment Mobile App</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">FunVido</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/videos">Videos</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="/categories">Categories</a>
+                </li>
+                </ul>
+            </div>
+        </div>        
+    </nav>
+
+    <div class="container">
+        <div class="row mt-2">
+            <div class="col">
+                <h2>Video List</h2>
+            </div>
+            <div class="col">
+                <a class="btn btn-primary" href="/videos/new">New Video</a>
+            </div>
+            
+        </div>
+        
+        <div class="row mt-2">
+            <% videos.forEach(function(video){ %>
+                <div class="col-3">
+                    <div class="card">
+                        <img class="card-img-top" src="https://i1.ytimg.com/vi/<%= video.videoId %>/<%= video.thumbnailType %>" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= video.title %></h5>
+                            <a href="/videos/<%= video._id %>/edit" class="card-link">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</body>
+</html>
