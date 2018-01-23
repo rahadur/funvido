@@ -72,4 +72,36 @@ router.get('/videos/:limit/laughing', function(req, res) {
     });
 });
 
+
+
+router.get('/videos/:title/search', function(req, res) {
+
+    var title = req.params.title;
+
+    Video.find({ $text: { $search: title,  $caseSensitive: false }}, function(err, videos) {
+        if(err) {
+            return res.status(400).send(err);
+        }
+
+        return res.json(videos);
+    });
+});
+
+
+router.get('/videos/:title/search/:limit', function(req, res) {
+
+    var title = req.params.title;
+    var limit = parseInt(req.params.limit) || 10;
+
+    Video.find({ $text: { $search: title,  $caseSensitive: false }})
+        .limit(limit)
+        .exec(function(err, videos) {
+            if(err) {
+                return res.status(400).send(err);
+            }
+    
+            return res.json(videos);
+        });
+});
+
 module.exports = router;

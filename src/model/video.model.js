@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 
 var videoSchema = new Schema({
     videoId: { type: String, unique: true, require: true },
-    title: String,
+    title: { type: String, text: true },
     laughing: { type: Boolean, default: false },
     thumbnailType: String,
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
