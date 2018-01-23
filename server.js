@@ -55,8 +55,9 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 }
 
 // Database connection
-//mongoose.connect(mongoURL);
-mongoose.connect('mongodb://localhost:27017/funvido');
+mongoose.connect(mongoURL);
+
+//mongoose.connect('mongodb://localhost:27017/funvido');
 
 
 var db = null,
